@@ -2,7 +2,10 @@ package com.helpdesk.helpdesk.controller;
 
 import com.helpdesk.helpdesk.dto.ChamadoRequestDTO;
 import com.helpdesk.helpdesk.dto.ChamadoResponseDTO;
+import com.helpdesk.helpdesk.dto.ComentarioRequestDTO;
+import com.helpdesk.helpdesk.dto.ComentarioResponseDTO;
 import com.helpdesk.helpdesk.service.ChamadoService;
+import com.helpdesk.helpdesk.service.ComentarioService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,6 +15,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -20,6 +24,7 @@ import java.util.UUID;
 public class ChamadoController {
 
     private final ChamadoService service;
+    private final ComentarioService comentarioService;
 
     @PostMapping
     public ResponseEntity<ChamadoResponseDTO> criar(
@@ -70,5 +75,21 @@ public class ChamadoController {
     @PutMapping("/{id}/atribuir-automaticamente")
     public ResponseEntity<ChamadoResponseDTO> atribuirAutomaticamente(@PathVariable UUID id) {
         return ResponseEntity.ok(service.atribuirAutomaticamente(id));
+    }
+
+    // --- Comentários ---
+    
+    @GetMapping("/{id}/comentarios")
+    public ResponseEntity<List<ComentarioResponseDTO>> getComentarios(@PathVariable UUID id) {
+        // We will need to update ComentarioService to use UUID for Chamado ID!
+        return ResponseEntity.ok(comentarioService.getComentarios(id));
+    }
+
+    @PostMapping("/{id}/comentarios")
+    public ResponseEntity<ComentarioResponseDTO> addComentario(
+            @PathVariable UUID id, 
+            @Valid @RequestBody ComentarioRequestDTO dto, 
+            @AuthenticationPrincipal UserDetails userDetails) {
+        return ResponseEntity.ok(comentarioService.addComentario(id, userDetails.getUsername(), dto));
     }
 }

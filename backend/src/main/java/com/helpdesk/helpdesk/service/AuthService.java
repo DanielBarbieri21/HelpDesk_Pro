@@ -14,6 +14,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -26,26 +28,22 @@ public class AuthService {
 
     public AuthResponseDTO register(RegisterRequestDTO request) {
         if (repository.findByEmail(request.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("E-mail já cadastrado");
+            throw new RuntimeException("E-mail já está em uso");
         }
 
-        Usuario user = mapper.toEntity(request);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        Usuario usuario = new Usuario();
+        usuario.setName(request.getName());
+        usuario.setEmail(request.getEmail());
+        usuario.setPassword(passwordEncoder.encode(request.getPassword()));
+        usuario.setRole(Role.USUARIO); // Registros públicos sempre caem como USUARIO (cliente)
+        usuario.setCreatedAt(LocalDateTime.now());
         
-        try {
-            user.setRole(Role.valueOf(request.getRole().toUpperCase()));
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Role inválida. Valores aceitos: ADMIN, TECNICO, USUARIO");
-        }
-
-        repository.save(user);
-
-        String accessToken = jwtService.generateToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
-
+        usuario = repository.save(usuario);
+        
+        // Retorna token de login automático (opcional, ou pode obrigar a logar manualmente)
+        String jwtToken = jwtService.generateToken(usuario);
         return AuthResponseDTO.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
+                .accessToken(jwtToken)
                 .build();
     }
 

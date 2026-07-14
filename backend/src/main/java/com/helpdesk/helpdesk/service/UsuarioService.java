@@ -56,4 +56,10 @@ public class UsuarioService {
     public void delete(UUID id) {
         usuarioRepository.deleteById(id);
     }
+
+    public com.helpdesk.helpdesk.dto.UsuarioProfileDTO getProfile(String email) {
+        Usuario usuario = usuarioRepository.findByEmail(email)
+            .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        return usuarioMapper.toProfileDTO(usuario);
+    }
 }

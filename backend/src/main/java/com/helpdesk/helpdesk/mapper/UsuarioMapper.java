@@ -16,4 +16,6 @@ public interface UsuarioMapper {
     Usuario toEntity(RegisterRequestDTO dto);
 
     com.helpdesk.helpdesk.dto.UsuarioResponseDTO toResponseDTO(Usuario entity);
+    
+    com.helpdesk.helpdesk.dto.UsuarioProfileDTO toProfileDTO(Usuario entity);
 }
