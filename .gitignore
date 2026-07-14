@@ -1,0 +1,41 @@
+# ==============================
+# Node & Angular (Frontend)
+# ==============================
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/.npm/
+npm-debug.log
+yarn-error.log
+
+# ==============================
+# Java, Maven & Spring Boot (Backend)
+# ==============================
+backend/target/
+backend/*.jar
+backend/*.war
+backend/*.ear
+backend/*.class
+backend/.mvn/wrapper/maven-wrapper.jar
+
+# ==============================
+# IDEs e Ferramentas (IntelliJ, VSCode, Eclipse)
+# ==============================
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.classpath
+.project
+.settings/
+.springBeans
+
+# ==============================
+# Sistema Operacional e Outros
+# ==============================
+.DS_Store
+Thumbs.db
+*.log
+*.sqlite
+.env
