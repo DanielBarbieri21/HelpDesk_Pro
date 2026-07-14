@@ -1,0 +1,39 @@
+<h2 mat-dialog-title class="dialog-title">
+  <mat-icon color="primary">add_circle</mat-icon>
+  Abrir Novo Chamado
+</h2>
+
+<mat-dialog-content class="dialog-content">
+  <form [formGroup]="form" class="create-form">
+    
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Título do Chamado</mat-label>
+      <input matInput formControlName="titulo" placeholder="Ex. Sistema ERP fora do ar">
+      <mat-error *ngIf="form.get('titulo')?.hasError('required')">Título é obrigatório</mat-error>
+      <mat-error *ngIf="form.get('titulo')?.hasError('minlength')">Mínimo 5 caracteres</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Prioridade</mat-label>
+      <mat-select formControlName="prioridade">
+        <mat-option *ngFor="let p of prioridades" [value]="p">{{ p }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Descrição detalhada</mat-label>
+      <textarea matInput formControlName="descricao" rows="4" placeholder="Descreva os detalhes do problema"></textarea>
+      <mat-error *ngIf="form.get('descricao')?.hasError('required')">Descrição é obrigatória</mat-error>
+      <mat-error *ngIf="form.get('descricao')?.hasError('minlength')">Mínimo 10 caracteres</mat-error>
+    </mat-form-field>
+
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-button mat-dialog-close [disabled]="isLoading()">Cancelar</button>
+  <button mat-flat-button color="primary" (click)="onSubmit()" [disabled]="form.invalid || isLoading()">
+    <span *ngIf="!isLoading()">CRIAR CHAMADO</span>
+    <mat-spinner *ngIf="isLoading()" diameter="20" color="accent"></mat-spinner>
+  </button>
+</mat-dialog-actions>

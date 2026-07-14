@@ -1,0 +1,55 @@
+<div class="dashboard-container">
+  <div class="welcome-header">
+    <h1 class="page-title">Bem-vindo(a), {{ authService.currentUser()?.name }}! 👋</h1>
+    <p class="page-subtitle">Aqui está o resumo da operação do HelpDesk Pro.</p>
+  </div>
+
+  <div *ngIf="isLoading()" class="loading-state">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Carregando estatísticas...</p>
+  </div>
+
+  <div *ngIf="!isLoading() && stats() as s" class="dashboard-grid">
+    
+    <!-- Resumo Total -->
+    <mat-card class="glass-panel summary-card">
+      <mat-card-content class="summary-content">
+        <div class="summary-icon">
+          <mat-icon>confirmation_number</mat-icon>
+        </div>
+        <div class="summary-data">
+          <h2>{{ s.totalChamados }}</h2>
+          <p>Chamados Totais</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Gráfico de Status -->
+    <mat-card class="glass-panel chart-card">
+      <mat-card-header>
+        <mat-card-title>Status dos Chamados</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="chart-content">
+        <canvas baseChart
+          [data]="statusChartData"
+          [type]="statusChartType">
+        </canvas>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Gráfico de Prioridade -->
+    <mat-card class="glass-panel chart-card">
+      <mat-card-header>
+        <mat-card-title>Tickets por Prioridade</mat-card-title>
+      </mat-card-header>
+      <mat-card-content class="chart-content">
+        <canvas baseChart
+          [data]="prioridadeChartData"
+          [options]="prioridadeChartOptions"
+          [type]="prioridadeChartType">
+        </canvas>
+      </mat-card-content>
+    </mat-card>
+
+  </div>
+</div>

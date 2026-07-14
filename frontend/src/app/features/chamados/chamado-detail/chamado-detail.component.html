@@ -1,0 +1,89 @@
+<div class="page-container" *ngIf="!isLoading(); else loadingTpl">
+  
+  <div class="header-actions">
+    <button mat-icon-button (click)="location.back()" matTooltip="Voltar">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span class="back-text">Voltar para Chamados</span>
+  </div>
+
+  <mat-card class="detail-card glass-panel premium-shadow" *ngIf="chamado() as c">
+    <mat-card-header>
+      <mat-card-title class="ticket-title">#{{ c.id }} - {{ c.titulo }}</mat-card-title>
+      <mat-card-subtitle>Aberto em {{ c.dataAbertura | date:'dd/MM/yyyy HH:mm' }}</mat-card-subtitle>
+      
+      <div class="tags-container">
+        <span class="custom-chip" [ngClass]="getStatusColor(c.status)">
+          {{ c.status.replace('_', ' ') }}
+        </span>
+        <span class="custom-chip" [ngClass]="getPrioridadeColor(c.prioridade)">
+          {{ c.prioridade }}
+        </span>
+      </div>
+    </mat-card-header>
+
+    <mat-divider></mat-divider>
+
+    <mat-card-content class="ticket-content">
+      <div class="info-grid">
+        <div class="info-block">
+          <span class="info-label">Cliente</span>
+          <span class="info-value">ID: {{ c.clienteId || 'Não informado' }}</span>
+        </div>
+        <div class="info-block">
+          <span class="info-label">Técnico Responsável</span>
+          <span class="info-value">{{ c.tecnicoId ? 'ID: ' + c.tecnicoId : 'Não atribuído' }}</span>
+        </div>
+        <div class="info-block">
+          <span class="info-label">Última Atualização</span>
+          <span class="info-value">{{ c.dataAtualizacao | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+      </div>
+
+      <div class="description-block">
+        <h3 class="desc-label">Descrição do Problema</h3>
+        <p class="desc-text">{{ c.descricao }}</p>
+      </div>
+    </mat-card-content>
+
+    <mat-divider></mat-divider>
+
+    <!-- Barra de Ações baseada no Status (Máquina de Estados) -->
+    <mat-card-actions class="action-bar" *ngIf="!isActionLoading(); else actionLoading">
+      
+      <button mat-flat-button color="primary" 
+              *ngIf="c.status === 'ABERTO'" 
+              (click)="executarAcao('atender')">
+        <mat-icon>play_arrow</mat-icon> INICIAR ATENDIMENTO
+      </button>
+
+      <button mat-flat-button color="accent" 
+              *ngIf="c.status === 'EM_ANDAMENTO'" 
+              (click)="executarAcao('resolver')">
+        <mat-icon>check_circle</mat-icon> MARCAR COMO RESOLVIDO
+      </button>
+
+      <button mat-stroked-button color="warn" 
+              *ngIf="c.status === 'RESOLVIDO'" 
+              (click)="executarAcao('fechar')">
+        <mat-icon>lock</mat-icon> FECHAR CHAMADO
+      </button>
+
+    </mat-card-actions>
+    
+    <ng-template #actionLoading>
+      <mat-card-actions class="action-bar loading-bar">
+        <mat-spinner diameter="30"></mat-spinner>
+        <span>Processando...</span>
+      </mat-card-actions>
+    </ng-template>
+
+  </mat-card>
+
+</div>
+
+<ng-template #loadingTpl>
+  <div class="full-loading">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>
