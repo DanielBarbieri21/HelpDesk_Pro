@@ -44,3 +44,8 @@ Thumbs.db
 # Claude Code
 # ==============================
 .claude/
+
+# ==============================
+# Backup local temporario
+# ==============================
+frontend-backup.bundle
