@@ -25,4 +25,7 @@ public interface ChamadoRepository extends JpaRepository<Chamado, UUID> {
     Page<Chamado> findBySolicitanteId(UUID solicitanteId, Pageable pageable);
 
     long countByTecnicoAndStatusIn(com.helpdesk.helpdesk.entity.Usuario tecnico, java.util.Collection<StatusChamado> statuses);
+
+    long countByStatus(StatusChamado status);
+    long countByPrioridade(Prioridade prioridade);
 }

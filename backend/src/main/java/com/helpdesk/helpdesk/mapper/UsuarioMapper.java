@@ -14,4 +14,6 @@ public interface UsuarioMapper {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "createdBy", ignore = true)
     Usuario toEntity(RegisterRequestDTO dto);
+
+    com.helpdesk.helpdesk.dto.UsuarioResponseDTO toResponseDTO(Usuario entity);
 }

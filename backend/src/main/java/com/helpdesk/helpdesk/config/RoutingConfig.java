@@ -4,6 +4,7 @@ import com.helpdesk.helpdesk.routing.AtribuicaoStrategy;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 import java.util.Map;
 
@@ -14,6 +15,7 @@ public class RoutingConfig {
     private String strategyName;
 
     @Bean
+    @Primary
     public AtribuicaoStrategy activeAtribuicaoStrategy(Map<String, AtribuicaoStrategy> strategies) {
         AtribuicaoStrategy strategy = strategies.get(strategyName);
         if (strategy == null) {
