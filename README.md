@@ -211,6 +211,7 @@ User:     helpdesk
 Password: helpdesk_password
 ```
 
-## Licença
+🌐 GitHub: https://github.com/DanielBarbieri21  
+💼 LinkedIn: https://www.linkedin.com/in/daniel-barbieri-4990462a/
 
-Este projeto está licenciado sob a [MIT License](LICENSE).
+---
